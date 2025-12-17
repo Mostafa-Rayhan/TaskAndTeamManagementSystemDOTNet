@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using TaskEntity = TaskManagementSystem.Core.Entities.Task; // Add this alias
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementSystem.Core.Entities;
@@ -77,7 +78,7 @@ namespace TaskManagementSystem.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> CreateTask([FromBody] Task task)
+        public async Task<IActionResult> CreateTask([FromBody] TaskEntity task) // Use alias here
         {
             try
             {
@@ -95,7 +96,7 @@ namespace TaskManagementSystem.API.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> UpdateTask(int id, [FromBody] Task task)
+        public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskEntity task) // Use alias here
         {
             try
             {

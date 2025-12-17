@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
@@ -14,11 +12,11 @@ using TaskManagementSystem.Infrastructure.Interfaces;
 
 namespace TaskManagementSystem.Infrastructure.Repositories
 {
-    public interface ITaskRepository : IRepository<Task>
+    public interface ITaskRepository : IRepository<Core.Entities.Task>
     {
-        Task<IEnumerable<Task>> SearchTasksAsync(TaskFilterParams filterParams);
-        Task<IEnumerable<Task>> GetTasksByUserIdAsync(int userId);
-        Task<IEnumerable<Task>> GetTasksByTeamIdAsync(int teamId);
+        Task<IEnumerable<Core.Entities.Task>> SearchTasksAsync(TaskFilterParams filterParams);
+        Task<IEnumerable<Core.Entities.Task>> GetTasksByUserIdAsync(int userId);
+        Task<IEnumerable<Core.Entities.Task>> GetTasksByTeamIdAsync(int teamId);
         Task UpdateTaskStatusAsync(int taskId, TaskStatus status);
     }
 
@@ -31,29 +29,29 @@ namespace TaskManagementSystem.Infrastructure.Repositories
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public async Task<Task> GetByIdAsync(int id)
+        public async Task<Core.Entities.Task> GetByIdAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 var parameters = new { Id = id };
-                return await connection.QueryFirstOrDefaultAsync<Task>(
+                return await connection.QueryFirstOrDefaultAsync<Core.Entities.Task>(
                     "sp_GetTaskById",
                     parameters,
                     commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<IEnumerable<Task>> GetAllAsync()
+        public async Task<IEnumerable<Core.Entities.Task>> GetAllAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                return await connection.QueryAsync<Task>(
+                return await connection.QueryAsync<Core.Entities.Task>(
                     "sp_GetAllTasks",
                     commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<Task> AddAsync(Task task)
+        public async Task<Core.Entities.Task> AddAsync(Core.Entities.Task task)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -78,7 +76,7 @@ namespace TaskManagementSystem.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateAsync(Task task)
+        public async Task UpdateAsync(Core.Entities.Task task)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -113,7 +111,7 @@ namespace TaskManagementSystem.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<Task>> SearchTasksAsync(TaskFilterParams filterParams)
+        public async Task<IEnumerable<Core.Entities.Task>> SearchTasksAsync(TaskFilterParams filterParams)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -130,31 +128,31 @@ namespace TaskManagementSystem.Infrastructure.Repositories
                     SortOrder = filterParams.SortOrder
                 };
 
-                return await connection.QueryAsync<Task>(
+                return await connection.QueryAsync<Core.Entities.Task>(
                     "sp_SearchTasks",
                     parameters,
                     commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<IEnumerable<Task>> GetTasksByUserIdAsync(int userId)
+        public async Task<IEnumerable<Core.Entities.Task>> GetTasksByUserIdAsync(int userId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 var parameters = new { UserId = userId };
-                return await connection.QueryAsync<Task>(
+                return await connection.QueryAsync<Core.Entities.Task>(
                     "sp_GetTasksByUserId",
                     parameters,
                     commandType: CommandType.StoredProcedure);
             }
         }
 
-        public async Task<IEnumerable<Task>> GetTasksByTeamIdAsync(int teamId)
+        public async Task<IEnumerable<Core.Entities.Task>> GetTasksByTeamIdAsync(int teamId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 var parameters = new { TeamId = teamId };
-                return await connection.QueryAsync<Task>(
+                return await connection.QueryAsync<Core.Entities.Task>(
                     "sp_GetTasksByTeamId",
                     parameters,
                     commandType: CommandType.StoredProcedure);

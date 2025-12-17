@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +10,7 @@ using TaskManagementSystem.Core.Services.Commands;
 using TaskManagementSystem.Core.Services.Queries;
 using TaskManagementSystem.Infrastructure.Data;
 using TaskManagementSystem.Infrastructure.Repositories;
+using TaskManagementSystem.Infrastructure.Services; // Add this
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi;
 
@@ -34,12 +36,12 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
-// Register Command Services
-builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+// Register Command Services (from Infrastructure.Services)
+//builder.Services.AddScoped<IUserCommandService, UserCommandService>();
 builder.Services.AddScoped<ITeamCommandService, TeamCommandService>();
-builder.Services.AddScoped<ITaskCommandService, TaskCommandService>();
+//builder.Services.AddScoped<ITaskCommandService, TaskCommandService>();
 
-// Register Query Services
+// Register Query Services (from Core.Services.Queries)
 builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddScoped<ITeamQueryService, TeamQueryService>();
 builder.Services.AddScoped<ITaskQueryService, TaskQueryService>();
